@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <title>W3.CSS Template</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+      body, h1, h2, h3, h4, h5, h6 { font-family: "Raleway", sans-serif; }
+      .w3-card-4 {
+        transition: transform .2s ease-in-out;
+      }
+      .w3-card-4:hover {
+        transform: scale(1.05);
+      }
+      .w3-dropdown-content {
+        min-width: 200px;
+      }
+      /* Navbar customizada */
+      .w3-navbar {
+        margin-bottom: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 100;
+      }
+      /* Centralizar o logo da imagem */
+      .w3-navbar-center img {
+        max-height: 50px;
+        width: auto;
+        cursor: pointer;
+      }
+      /* Estilo do modal */
+      .w3-modal-content {
+        padding: 20px;
+      }
+      /* Mensagem de erro */
+      .error-message {
+        color: red;
+        font-size: 14px;
+      }
+      /* Estilo geral para o modal */
+.modal {
+  display: none;  /* Inicialmente o modal está oculto */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1000;  /* Modal fica acima de outros elementos */
+  opacity: 0; /* Inicialmente invisível */
+  transform: scale(0.9); /* Inicialmente um pouco menor */
+  transition: opacity 0.3s ease, transform 0.3s ease;  /* Transição suave para opacidade e escala */
+}
+
+/* Estilo quando o modal está visível */
+.modal.show {
+  display: block;
+  opacity: 1;
+  transform: scale(1);  /* Aumenta para o tamanho normal */
+}
+
+
+      /* Estilo do footer */
+      footer {
+        background-color: #333;
+        color: white;
+        padding: 20px 0;
+        text-align: center;
+        position: relative;
+        bottom: 0;
+        width: 100%;
+        margin-top: 20px;
+      }
+      footer a {
+        color: #fff;
+        text-decoration: none;
+      }
+      footer a:hover {
+        text-decoration: underline;
+      }
+      /* Garantir que o conteúdo da página ocupe toda a altura disponível */
+      .w3-content {
+        min-height: 100vh;
+        padding-top: 60px; /* Espaço para a navbar fixa */
+        padding-bottom: 60px; /* Altura do footer */
+      }
+
+  .cards-container {
+    display: flex;
+   flex-wrap: wrap;
+   gap: 20px;
+   justify-content:center;
+   margin-top: 16px;
+  }
+
+  .card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 500px;
+  text-align: center;
+  background-color: #fff;
+  transition: transform 0.3s ease;
+  position: relative;
+
+   /* Permitir que a altura se ajuste conforme o conteúdo */
+  height: auto; /* Altura automática */
+  display: flex;
+  flex-direction: column; /* Organiza o conteúdo verticalmente */
+  overflow: hidden; /* Garante que nada ultrapasse os limites do card */
+
+}
+.card h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  flex-shrink: 0;
+  word-wrap: break-word; /* Quebra palavras longas para evitar que saiam do card */
+
+}
+.card p {
+  font-size: 14px;
+  margin-bottom: 10px;
+  flex-grow: 1;
+  word-wrap: break-word; /* Quebra palavras longas para evitar que saiam do card */
+  overflow: auto; /* Torna o conteúdo rolável, se necessário */
+
+}
+.card button {
+  margin-top: 8px;
+}
+
+/* Definição para o conteúdo rolável */
+.card .content {
+  max-height: 150px; /* Altura máxima do conteúdo do card */
+  overflow-y: auto; /* Habilita rolagem vertical se o conteúdo exceder o tamanho */
+}
+
+      .card:hover {
+        transform: scale(1.05);
+      }
+
+      .section-title {
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      /* Ocultar todas as seções inicialmente */
+.section {
+  display: none;
+}
+
+/* Exibir a seção ativa */
+.section.active {
+  display: block;
+}
+
+/* Estilo para os botões de navegação entre as seções */
+.section-navigation {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.section-button {
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 0 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.section-button:hover {
+  background-color: #444;
+}
+
+.section-button:focus {
+  outline: none;
+}
+
+/* Estilo para os botões de alternância entre as seções */
+.section-toggle-btn {
+    background-color: #f9f9f9; /* Cor de fundo igual ao fundo do body */
+    color: black; /* Cor do texto */
+    border: 1px solid #ccc; /* Cor da borda */
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s, transform 0.2s ease-in-out;
+    border-radius: 4px;
+}
+
+.section-toggle-btn:hover {
+    background-color: #f1f1f1; /* Cor um pouco mais escura no hover */
+    transform: scale(1.05); /* Aumento no hover */
+}
+
+.section-toggle-btn.active {
+    background-color: #d1d1d1; /* Cor quando a seção está ativa */
+    color: white; /* Cor do texto ativo */
+}
+
+
+
+
+/* Botão de Perfil na navbar */
+.w3-right {
+  float: right;
+  margin-left: 20px; /* Distância do botão para a esquerda */
+}
+/* Botão de Perfil na navbar */
+.w3-right {
+  float: right;
+  margin-left: 20px; /* Distância do botão para a esquerda */
+}
+
+/* Estilo da sidebar */
+#userSidebar {
+  display: none; /* Inicia escondida */
+  position: fixed;
+  top: 0;
+  right: 0; /* Alinha a sidebar à direita */
+  height: 100%;
+  width: 250px;
+  background-color: #111;
+  color: white;
+  padding-top: 20px;
+  transition: left 0.3s ease;
+  z-index: 9999; /* Garante que a sidebar esteja no topo */
+}
+#userSidebar.show {
+  left: 0;
+}
+
+/* Estilo do botão de fechar (×) */
+.w3-button {
+  background: none;
+  color: white;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Estilo para campos com erro */
+input.error {
+  border: 2px solid red;
+}
+
+.error-message {
+  color: red;
+  font-size: 12px;
+}
+
+
+
+
+/* Responsividade para telas menores */
+@media (max-width: 1024px) {
+  .card-container {
+    width:45%; /* Para telas médias (como tablets), os cards terão 45% da largura */
+  }
+}
+
+@media (max-width: 768px) {
+  .card-container {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    width: 100%; /* Para telas muito pequenas, como celulares em modo retrato */
+    font-size: 12px; /* Reduzindo o tamanho da fonte para caber melhor */
+  }
+}
+
+      /* Sidebar/menu estilo */
+      #sidebar {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 250px;
+        height: 100%;
+        background-color: #333;
+        color: white;
+        padding: 20px;
+        transition: left 0.3s ease;
+        z-index: 1000;
+      }
+      #sidebar ul {
+        list-style-type: none;
+        padding: 0;
+      }
+      #sidebar ul li {
+        margin: 10px 0;
+      }
+      #sidebar ul li a {
+        color: white;
+        text-decoration: none;
+      }
+      #sidebar ul li a:hover {
+        text-decoration: underline;
+      }
+      /* Container para os botões Perfil e Logout */
+#userActions {
+  display: flex;
+  justify-content: space-between; /* Para separar os botões */
+  align-items: center;
+}
+
+/* Garantir que os botões tenham uma distância agradável */
+#userActions button {
+  margin: 10px;
+}
+
+      /* Botão para abrir/fechar a sidebar */
+      #sidebarToggle {
+        font-size: 20px;
+        color: white;
+        background-color: #333;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      #sidebarToggle:hover {
+        background-color: #444;
+      }
+      #userSidebar.show {
+        left: 0;
+      }
+      /* Botão para fechar a Sidebar */
+      #closeSidebarButton {
+        font-size: 30px;
+        color: white;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        position: absolute;
+        top: 10px;
+        right: 20px;
+      }
+      #closeSidebarButton:hover {
+        color: #ccc;
+      }
+    </style>
+  </head>
+  <body class="w3-light-grey w3-content" style="max-width:1600px">
+    <!-- Header / Navbar -->
+    <header class="w3-navbar w3-black w3-padding">
+      <div class="w3-container">
+        <!-- Botão para abrir a Sidebar (Menu) -->
+        <button id="sidebarToggle" onclick="toggleSidebar()">&#9776;</button>
+        
+        <!-- Logo -->
+        <span class="w3-bar-item w3-button w3-text-white w3-navbar-center">
+          <img src="assets/images/logo.png" alt="Logo" onclick="scrollToTop()">
+        </span>
+      </div>
+
+
+      <div class="w3-container w3-navbar-right">
+        <!-- Condicional: se o usuário não estiver logado, mostrar "Cadastre-se" e "Fazer Login" -->
+        <div id="guest-info">
+          <button class="w3-bar-item w3-button w3-text-white" onclick="openModal('cadastroModal')">Cadastrar</button>
+          <button class="w3-bar-item w3-button w3-text-white" onclick="openModal('loginModal')">Fazer Login</button>
+        </div>
+
+        <!-- Mostrar nome do usuário e botão de logout se estiver logado -->
+        <div id="user-info" style="display:none;">
+          <span id="user-name"></span>
+          <button class="w3-bar-item w3-button w3-text-white" onclick="logout()">Logout</button>
+          
+        </div>
+      </div>
+       
+    </header>
+
+<!-- Sidebar com os dados do usuário -->
+<div id="userSidebar" class="w3-sidebar w3-bar-block w3-black" style="display: none; width: 250px; position: fixed; top: 0; right: 0; height: 100%; padding-top: 20px;">
+  <button onclick="closeSidebar()" class="w3-button w3-large w3-hover-none w3-hover-text-grey" style="position: absolute; top: 20px; right: 20px;">&times;</button>
+
+  <!-- Dados do usuário -->
+    <h3 id="userNome">Nome: </h3>
+    <p id="userEmail">Email: </p>
+    <p id="userTelefone">Telefone: </p>
+    <p id="userCidade">Cidade: </p>
+    <p id="userEstado">Estado: </p>
+  
+
+  <!-- As opções só aparecerão se o usuário estiver logado -->
+  <ul>
+    <li><button class="w3-btn w3-teal" onclick="openModal('frutaModal')">Cadastrar Fruta</button></li>
+  </ul>
+</div>
+
+
+
+
+<button class="w3-btn w3-teal" onclick="openModal('filtrarModal')">Filtrar Frutas</button>
+
+ <!-- Modal de Filtrar Frutas -->
+<div id="filtrarModal" class="w3-modal">
+  <div class="w3-modal-content">
+    <header class="w3-container w3-teal">
+      <span onclick="closeModal('filtrarModal')" class="w3-button w3-display-topright">&times;</span>
+      <h2>Filtrar Frutas</h2>
+    </header>
+    <div class="w3-container">
+      <form id="filtrarFrutaForm" onsubmit="filtrarFrutas(event)">
+        <!-- Dropdown para selecionar o nome da fruta -->
+        <select class="w3-select w3-margin-bottom" id="filtrarFrutaNome">
+          <option value="" disabled selected>Selecione uma fruta</option>
+          <option value="Pequi">Pequi</option>
+          <option value="Buriti">Buriti</option>
+          <option value="Mangaba">Mangaba</option>
+          <option value="Cagaita">Cagaita</option>
+          <option value="Araticum">Araticum</option>
+          <option value="Guabiroba">Guabiroba</option>
+          <option value="Mutici">Mutici</option>
+          <option value="Mama_Cadela">Mama Cadela</option>
+          <option value="Baru">Baru</option>
+          <option value="Bocauva">Bocauva</option>
+        </select>
+
+        <!-- Campo de texto para Cidade -->
+        <input class="w3-input w3-margin-bottom" type="text" id="filtrarCidade" placeholder="Digite a cidade">
+
+        <!-- Campo de texto para Estado -->
+        <input class="w3-input w3-margin-bottom" type="text" id="filtrarEstado" placeholder="Digite o estado">
+        <!-- Botão para aplicar o filtro -->
+        <button class="w3-btn w3-teal w3-full" type="submit">Aplicar Filtro</button>
+      </form>
+    </div>
+  </div>
+</div>
+  <button class="w3-btn w3-gray w3-full" onclick="resetFiltro()">Redefinir Filtros</button>
+
+   <div id="frutaModal" class="w3-modal">
+  <div class="w3-modal-content">
+    <header class="w3-container w3-teal">
+      <span onclick="closeModal('frutaModal')" class="w3-button w3-display-topright">&times;</span>
+      <h2>Cadastro de Fruta</h2>
+    </header>
+    <div class="w3-container">
+      <form id="cadastroFrutaForm" onsubmit="cadastroFruta(event)">
+        <!-- Dropdown para selecionar o nome da fruta -->
+        <select class="w3-select w3-margin-bottom" id="frutaNome" required>
+          <option value="" disabled selected>Fruta</option>
+          <option value="Pequi">Pequi</option>
+          <option value="Buriti">Buriti</option>
+          <option value="Mangaba">Mangaba</option>
+          <option value="Cagaita">Cagaita</option>
+          <option value="Araticum">Araticum</option>
+          <option value="Guabiroba">Guabiroba</option>
+          <option value="Mutici">Mutici</option>
+          <option value="Mama_Cadela">Mama Cadela</option>
+          <option value="Baru">Baru</option>
+          <option value="Bocauva">Bocauva</option>
+        </select>
+
+        <!-- Campo para descrição da fruta -->
+        <textarea class="w3-input w3-margin-bottom" id="frutaDescricao" placeholder="Descrição da Fruta" required></textarea>
+        
+        <button class="w3-btn w3-teal w3-full" type="submit">Cadastrar</button>
+      </form>
+
+      <!-- Contêiner onde os cards serão exibidos -->
+      
+    </div>
+  </div>
+</div>
+    
+
+    <div id="main-content" class="w3-container">
+      <div class="w3-row">
+        <!-- Seção de navegação entre as seções -->
+        <div class="section-navigation">
+          <button class="section-toggle-btn active" onclick="showSection(1)">1</button>
+          <button class="section-toggle-btn" onclick="showSection(2)">2</button>
+          <button class="section-toggle-btn" onclick="showSection(3)">3</button>
+        </div>
+
+        <!-- Seções de conteúdo -->
+        <div class="section active" id="section1">
+          <div class="section-title">Seção 1</div>
+          <div class="card-container">
+            <div id="fruitCardsContainer" class="cards-container">
+        <!-- Os cards das frutas cadastradas aparecerão aqui -->
+      </div>
+          </div>
+        </div>
+
+        <div class="section" id="section2">
+          <div class="section-title">Seção 2</div>
+          <div class="card-container">
+            <div class="card">Card A</div>
+            <div class="card">Card B</div>
+            <div class="card">Card C</div>
+          </div>
+        </div>
+
+        <div class="section" id="section3">
+          <div class="section-title">Seção 3</div>
+          <div class="card-container">
+            <div class="card">Card X</div>
+            <div class="card">Card Y</div>
+            <div class="card">Card Z</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+<!-- Modal para exibir informações do solicitante -->
+<div id="solicitarModal" class="w3-modal" style="display: none;">
+  <div class="w3-modal-content">
+    <header class="w3-container w3-teal">
+      <span onclick="closeModal('solicitarModal')" class="w3-button w3-display-topright">&times;</span>
+      <h2>Informações do Cadastro</h2>
+    </header>
+    <div class="w3-container">
+      <p><strong>Nome:</strong> <span id="solicitanteNome"></span></p>
+      <p><strong>Email:</strong> <span id="solicitanteEmail"></span></p>
+      <p><strong>Telefone:</strong> <span id="solicitanteTelefone"></span></p>
+      <p><strong>Cidade:</strong> <span id="solicitanteCidade"></span></p>
+      <p><strong>Estado:</strong> <span id="solicitanteEstado"></span></p>
+    </div>
+  </div>
+</div>
+
+<div id="dadosCadastradorModal" class="w3-modal">
+  <div class="w3-modal-content">
+    <header class="w3-container w3-teal">
+      <span onclick="closeModal('dadosCadastradorModal')" class="w3-button w3-display-topright">&times;</span>
+      <h2>Dados do Cadastrador</h2>
+    </header>
+    <div class="w3-container">
+      <p id="dadosCadastradorNome">Nome: </p>
+      <p id="dadosCadastradorEmail">Email: </p>
+      <p id="dadosCadastradorTelefone">Telefone: </p>
+      <p id="dadosCadastradorCidade">Cidade: </p>
+      <p id="dadosCadastradorEstado">Estado: </p>
+    </div>
+  </div>
+</div>
+
+
+
+    <!-- Rodapé -->
+    <footer>
+      <p>&copy; 2024 Todos os direitos reservados. <a href="#">Política de Privacidade</a></p>
+    </footer>
+
+    <!-- Modals de autenticação -->
+    <div id="loginModal" class="w3-modal">
+      <div class="w3-modal-content">
+        <header class="w3-container w3-teal">
+          <span onclick="closeModal('loginModal')" class="w3-button w3-display-topright">&times;</span>
+          <h2>Login</h2>
+        </header>
+        <div class="w3-container">
+          <form id="loginForm" onsubmit="login(event)">
+            <input class="w3-input w3-margin-bottom" type="text" id="loginUsername" placeholder="Usuário" required>
+            <input class="w3-input w3-margin-bottom" type="password" id="loginPassword" placeholder="Senha" required>
+            <button class="w3-btn w3-teal w3-full" type="submit">Entrar</button>
+          </form>
+          <p class="error-message" id="loginErrorMessage" style="display: none;"></p>
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- Modal para exibir informações do usuário -->
+<div id="solicitarModal" class="w3-modal">
+  <div class="w3-modal-content">
+    <header class="w3-container w3-teal">
+      <span onclick="closeModal('solicitarModal')" class="w3-button w3-display-topright">&times;</span>
+      <h2>Informações do Usuário</h2>
+    </header>
+    <div class="w3-container">
+      <p id="userInfo"></p> <!-- Aqui as informações serão injetadas -->
+    </div>
+  </div>
+</div>
+
+<div id="mensagemSucesso" style="display: none;">
+  <p>Cadastro realizado com sucesso!</p>
+</div>
+
+<div id="mensagemErro" style="display: none;">
+  <p>Erro ao tentar cadastrar. Tente novamente.</p>
+</div>
+
+    <div id="cadastroModal" class="w3-modal">
+  <div class="w3-modal-content">
+    <header class="w3-container w3-teal">
+      <span onclick="closeModal('cadastroModal')" class="w3-button w3-display-topright">&times;</span>
+      <h2>Cadastro</h2>
+    </header>
+    <div class="w3-container">
+      <form id="cadastroForm" onsubmit="cadastro(event)">
+        <input class="w3-input w3-margin-bottom" type="text" id="cadastroNome" placeholder="Nome Completo" required>
+        <input class="w3-input w3-margin-bottom" type="email" id="cadastroEmail" placeholder="Email" required>
+        <input class="w3-input w3-margin-bottom" type="text" id="cadastroTelefone" placeholder="Telefone" required>
+        <input class="w3-input w3-margin-bottom" type="text" id="cadastroCidade" placeholder="Cidade" required>
+        <input class="w3-input w3-margin-bottom" type="text" id="cadastroEstado" placeholder="Estado" required>
+        
+<input class="w3-input w3-margin-bottom" type="password" id="cadastroSenha" placeholder="Senha" required>
+<button type="button" onclick="togglePasswordVisibility('cadastroSenha')">Mostrar/Ocultar</button>
+
+<input class="w3-input w3-margin-bottom" type="password" id="cadastroConfirmaSenha" placeholder="Confirmar Senha" required>
+<button type="button" onclick="togglePasswordVisibility('cadastroConfirmaSenha')">Mostrar/Ocultar</button>
+
+        
+       
+        <button class="w3-btn w3-teal w3-full" type="submit">Cadastrar</button>
+      </form>
+      <p class="error-message" id="cadastroErrorMessage" style="display: none;"></p>
+    </div>
+  </div>
+</div>
+
+
+
+    <script>
+      // Estado de login
+      let loggedIn = false; // Define se o usuário está logado (deve ser alterado com a lógica real de login)
+// Função para exibir as informações de quem cadastrou a fruta no modal
+function solicitarFruta(nome, email, telefone, cidade, estado) {
+  // Exibir as informações no modal
+  const usuarioInfo = `
+    <strong>Informações do usuário:</strong><br>
+    <strong>Nome:</strong> ${nome}<br>
+    <strong>Email:</strong> ${email}<br>
+    <strong>Telefone:</strong> ${telefone}<br>
+    <strong>Cidade:</strong> ${cidade}<br>
+    <strong>Estado:</strong> ${estado}
+  `;
+  
+  // Inserir as informações no elemento do modal
+  document.getElementById('userInfo').innerHTML = usuarioInfo;
+
+  // Exibir o modal
+  openModal('solicitarModal');
+}
+
+function abrirSolicitarModal(button) {
+  // Obter o card pai do botão
+  const card = button.parentElement;
+
+  // Capturar os dados do solicitante do card
+  const nome = card.getAttribute('data-nome');
+  const email = card.getAttribute('data-email');
+  const telefone = card.getAttribute('data-telefone');
+  const cidade = card.getAttribute('data-cidade');
+  const estado = card.getAttribute('data-estado');
+
+  // Exibir os dados no modal
+  document.getElementById('solicitanteNome').innerText = nome || 'Não informado';
+  document.getElementById('solicitanteEmail').innerText = email || 'Não informado';
+  document.getElementById('solicitanteTelefone').innerText = telefone || 'Não informado';
+  document.getElementById('solicitanteCidade').innerText = cidade || 'Não informado';
+  document.getElementById('solicitanteEstado').innerText = estado || 'Não informado';
+
+  // Abrir o modal
+  openModal('solicitarModal');
+}
+
+
+  function resetFiltro() {
+  const cards = document.querySelectorAll('.card');
+  cards.forEach(card => {
+    card.style.display = 'block'; // Exibir todos os cards
+  });
+
+  // Limpar os campos de filtro
+  document.getElementById('filtrarFrutaNome').value = '';
+  document.getElementById('filtrarCidade').value = '';
+  document.getElementById('filtrarEstado').value = '';
+
+  // Fechar o modal (opcional)
+  closeModal('filtrarModal');
+}
+
+  function filtrarFrutas(event) {
+  event.preventDefault(); // Evita o comportamento padrão do formulário
+
+  // Obter os valores dos campos
+  const frutaSelecionada = document.getElementById('filtrarFrutaNome').value;
+  const cidade = document.getElementById('filtrarCidade').value.trim();
+  const estado = document.getElementById('filtrarEstado').value.trim();
+
+  // Lógica de filtragem
+  const cards = document.querySelectorAll('.card'); // Assume que os itens estão em cards
+  cards.forEach(card => {
+    const frutaCard = card.getAttribute('data-fruta'); // Nome da fruta no card
+    const cidadeCard = card.getAttribute('data-cidade'); // Cidade no card
+    const estadoCard = card.getAttribute('data-estado'); // Estado no card
+
+    // Verifica se o card deve ser exibido com base nos filtros aplicados
+    const matchFruta = frutaSelecionada ? frutaCard === frutaSelecionada : true;
+    const matchCidade = cidade ? cidadeCard.toLowerCase().includes(cidade.toLowerCase()) : true;
+    const matchEstado = estado ? estadoCard.toLowerCase().includes(estado.toLowerCase()) : true;
+
+    // Exibe ou oculta o card
+    if (matchFruta && matchCidade && matchEstado) {
+      card.style.display = 'block'; // Exibir o card
+    } else {
+      card.style.display = 'none'; // Ocultar o card
+    }
+  });
+
+  // Fechar o modal após aplicar o filtro
+  closeModal('filtrarModal');
+}
+
+
+function cadastroFruta(event) {
+  event.preventDefault(); // Previne o envio padrão do formulário
+
+  // Obtenção dos valores dos campos
+  const frutaNome = document.getElementById('frutaNome').value;
+  const frutaDescricao = document.getElementById('frutaDescricao').value;
+
+  // Verificação de validação básica
+  if (!frutaNome || !frutaDescricao) {
+    alert('Por favor, preencha todos os campos corretamente!');
+    return;
+  }
+
+  // Criação do novo card dinamicamente
+  const card = document.createElement('div');
+  card.className = 'card'; // Certifique-se de ter o estilo .card no CSS
+  card.innerHTML = `
+    <h3>${frutaNome}</h3>
+    <p>${frutaDescricao}</p>
+    <button class="w3-btn w3-blue" onclick="solicitarFruta('${frutaNome}')">Solicitar</button>
+  `;
+
+  // Adicionando o card ao contêiner correto
+  const container = document.getElementById('fruitCardsContainer');
+  if (container) {
+    container.appendChild(card);
+    alert('Fruta cadastrada com sucesso!');
+    closeModal('frutaModal');
+    document.getElementById('cadastroFrutaForm').reset();
+  } else {
+    console.error('Contêiner de cards não encontrado.');
+  }
+}
+
+
+function mostrarDadosCadastrador(usuario) {
+  // Preenchendo o modal com os dados do usuário
+  document.getElementById('dadosCadastradorNome').textContent = Nome: ${usuario.nome};
+  document.getElementById('dadosCadastradorEmail').textContent = Email: ${usuario.email};
+  document.getElementById('dadosCadastradorTelefone').textContent = Telefone: ${usuario.telefone};
+  document.getElementById('dadosCadastradorCidade').textContent = Cidade: ${usuario.cidade};
+  document.getElementById('dadosCadastradorEstado').textContent = Estado: ${usuario.estado};
+
+  // Abrindo o modal
+  openModal('dadosCadastradorModal');
+}
+
+
+function openModal(modalId) {
+  const modal = document.getElementById(modalId);
+  modal.classList.add('show');  // Adiciona a classe 'show' para mostrar o modal com transição
+}
+
+function closeModal(modalId) {
+  const modal = document.getElementById(modalId);
+  modal.classList.remove('show');  // Remove a classe 'show' para ocultar o modal com transição
+}
+
+ 
+function togglePasswordVisibility(passwordFieldId) {
+  const passwordField = document.getElementById(passwordFieldId);
+  const fieldType = passwordField.type;
+
+  if (fieldType === "password") {
+    passwordField.type = "text"; // Torna o campo visível
+  } else {
+    passwordField.type = "password"; // Torna o campo oculto
+  }
+}
+
+
+      // Função para exibir a sidebar
+// Simula o status de login do usuário (substitua conforme a lógica real)
+let isLoggedIn = false;  // Defina como true se o usuário estiver logado
+
+// Função para verificar o login e exibir o botão "Perfil"
+function checkLoginStatus() {
+  console.log('Verificando login...');  // Adicionando log para depuração
+
+  if (isLoggedIn) {
+    console.log('Usuário está logado. Exibindo o botão.');
+    document.getElementById('profileBtn').style.display = 'block';  // Exibe o botão "Perfil"
+  } else {
+    console.log('Usuário não está logado. Ocultando o botão.');
+    document.getElementById('profileBtn').style.display = 'none';   // Esconde o botão "Perfil"
+  }
+}
+
+// Função para exibir a sidebar
+function toggleSidebar() {
+  const sidebar = document.getElementById('userSidebar');
+  if (sidebar.style.display === 'block') {
+    sidebar.style.display = 'none';
+  } else {
+    sidebar.style.display = 'block';
+  }
+}
+
+// Função para verificar o login e exibir o botão "Perfil"
+function checkLoginStatus() {
+  if (loggedIn) {
+    // Exibe o botão "Perfil" se o usuário estiver logado
+    document.getElementById('profileBtn').style.display = 'block';
+  } else {
+    // Esconde o botão "Perfil" se o usuário não estiver logado
+    document.getElementById('profileBtn').style.display = 'none';
+  }
+}
+
+
+// Função para fechar a sidebar
+function closeSidebar() {
+  document.getElementById('userSidebar').style.display = 'none';
+}
+
+// Aguardar o carregamento completo da página para verificar o login
+window.onload = function() {
+  checkLoginStatus();  // Chama a função de verificação de login quando a página é carregada
+};
+
+
+// Função para fechar a sidebar
+function closeSidebar() {
+  document.getElementById('userSidebar').style.display = 'none';
+}
+
+
+      // Funções de login e logout
+      function login(event) {
+        event.preventDefault();
+        loggedIn = true;
+        document.getElementById('guest-info').style.display = 'none';
+        document.getElementById('user-info').style.display = 'block';
+        toggleSidebar(); // Atualiza a sidebar para mostrar opções
+        closeModal('loginModal');
+      }
+
+      function logout() {
+        loggedIn = false;
+        document.getElementById('guest-info').style.display = 'block';
+        document.getElementById('user-info').style.display = 'none';
+        toggleSidebar(); // Atualiza a sidebar para ocultar opções
+      }
+
+// Função para realizar o cadastro e exibir os dados na sidebar
+function cadastro(event) {
+  event.preventDefault(); // Previne o comportamento padrão do formulário
+
+  // Pegando os valores do formulário
+  const nome = document.getElementById('cadastroNome').value;
+  const email = document.getElementById('cadastroEmail').value;
+  const telefone = document.getElementById('cadastroTelefone').value;
+  const cidade = document.getElementById('cadastroCidade').value;
+  const estado = document.getElementById('cadastroEstado').value;
+  const senha = document.getElementById('cadastroSenha').value;
+  const confirmaSenha = document.getElementById('cadastroConfirmaSenha').value;
+
+  // Validação das senhas
+  if (senha !== confirmaSenha) {
+    document.getElementById('cadastroErrorMessage').style.display = 'block';
+    document.getElementById('cadastroErrorMessage').innerText = 'As senhas não coincidem!';
+    return;
+  }
+
+  // Simulação de sucesso de cadastro
+  alert(Cadastro realizado com sucesso!\nNome: ${nome}\nEmail: ${email}\nTelefone: ${telefone}\nCidade: ${cidade}\nEstado: ${estado});
+  
+  // Exibindo os dados do usuário na sidebar
+  document.getElementById('userNome').innerText = 'Nome: ' + nome;
+  document.getElementById('userEmail').innerText = 'Email: ' + email;
+  document.getElementById('userTelefone').innerText = 'Telefone: ' + telefone;
+  document.getElementById('userCidade').innerText = 'Cidade: ' + cidade;
+  document.getElementById('userEstado').innerText = 'Estado: ' + estado;
+
+  // Mostrar a sidebar com os dados do usuário
+  document.getElementById('user-info').style.display = 'block'; // Torna o bloco de dados visível
+  document.getElementById('userSidebar').style.display = 'block'; // Torna a sidebar visível
+
+  // Fechar o modal após o cadastro
+  closeModal('cadastroModal');
+}
+
+
+
+function clearErrorMessages() {
+  // Limpar mensagens de erro
+  document.getElementById('emailError').innerText = '';
+  document.getElementById('cadastroErrorMessage').innerText = '';
+  // Limpar classes de erro nos inputs
+  document.getElementById('cadastroEmail').classList.remove('error');
+  document.getElementById('cadastroSenha').classList.remove('error');
+  document.getElementById('cadastroConfirmaSenha').classList.remove('error');
+}
+
+
+
+      // Funções dos botões de Solicitar Fruta e Cadastrar Fruta
+      function solicitarFruta() {
+        alert("Solicitar Fruta");
+      }
+
+      function cadastrarFruta() {
+        alert("Cadastrar Fruta");
+      }
+
+      function closeModal(modalId) {
+        document.getElementById(modalId).style.display = 'none';
+      }
+
+      function openModal(modalId) {
+        document.getElementById(modalId).style.display = 'block';
+      }
+
+      function isEmailValid(email) {
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return regex.test(email);
+}
+
+function isPasswordStrong(password) {
+  return password.length >= 8 && /[A-Za-z]/.test(password) && /\d/.test(password);
+}
+
+    </script>
+  </body>
+</html>
